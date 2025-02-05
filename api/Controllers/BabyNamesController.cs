@@ -5,11 +5,11 @@ namespace BabyNameApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BabyNameController : ControllerBase
+    public class BabyNamesController : ControllerBase
     {
         private readonly BabyNamesService _babyNameService;
 
-        public BabyNameController(BabyNamesService babyNameService)
+        public BabyNamesController(BabyNamesService babyNameService)
         {
             _babyNameService = babyNameService;
         }
@@ -28,5 +28,11 @@ namespace BabyNameApi.Controllers
             return Ok(babyNames);
         }
 
+        [HttpGet("count")]
+        public IActionResult Count()
+        {
+            var count = _babyNameService.Count();
+            return Ok(count);
+        }
     }
 }

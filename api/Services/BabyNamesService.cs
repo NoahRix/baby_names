@@ -82,5 +82,10 @@ namespace BabyNamesApi.Services
         {
             return _dbContext.BabyNames.Take(1000).AsEnumerable();
         }
+
+        public int Count()
+        {
+            return _dbContext.BabyNames.Count();
+        }
     }
 }
