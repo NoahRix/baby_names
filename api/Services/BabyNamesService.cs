@@ -87,5 +87,10 @@ namespace BabyNamesApi.Services
         {
             return _dbContext.BabyNames.Count();
         }
+
+        public int DeleteAll()
+        {
+            return _dbContext.Database.ExecuteSqlRaw("DELETE FROM baby_names");
+        }        
     }
 }

@@ -34,5 +34,12 @@ namespace BabyNameApi.Controllers
             var count = _babyNameService.Count();
             return Ok(count);
         }
+
+        [HttpGet("delete-all")]
+        public IActionResult DeleteAll()
+        {
+            var count = _babyNameService.DeleteAll();
+            return Ok(count);
+        }        
     }
 }
