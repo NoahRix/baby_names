@@ -1,0 +1,72 @@
+networks:
+  dev-net:
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-react-dev
+    ports:
+      - "5174:5174"
+    volumes:
+      - ./frontend/nginx.dev.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - api
+    networks:
+      - dev-net
+
+  frontend:
+    container_name: frontend-dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    restart: unless-stopped
+    depends_on:
+      - api
+    networks:
+      - dev-net
+    # command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+  api:
+    container_name: api-dev
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:5159"
+      - "5005:5005"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mariadb;Database=baby_names_db;User=root;Password=my-secret-password;
+    depends_on:
+      - mariadb
+    volumes:
+      - ./api/baby_name_data:/app/baby_name_data
+    restart: always
+    networks:
+      - dev-net
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: mariadb-dev
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-password
+      MYSQL_DATABASE: baby_names_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3306:3306"
+    networks:
+      - dev-net
+    volumes:
+      - db_data_dev:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+volumes:
+  db_data_dev:

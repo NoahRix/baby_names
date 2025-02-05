@@ -1,0 +1,55 @@
+networks:
+  prod-net:
+
+services:
+
+  frontend:
+    container_name: frontend-prod
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "5175:5175"       
+    networks:
+      - prod-net
+    depends_on:
+      - api      
+
+  api:
+    container_name: api-prod
+    build:
+      context: ./api
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8081:8080"  # Expose only the HTTP production port
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=mariadb;Database=baby_names_db;User=root;Password=my-secret-password;
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+    networks:
+      - prod-net
+    volumes:
+      - ./api/baby_name_data:/app/baby_name_data      
+
+  mariadb:
+    image: mariadb:10.5
+    container_name: mariadb-prod
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-password
+      MYSQL_DATABASE: baby_names_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3307:3306"
+    networks:
+      - prod-net
+    volumes:
+      - db_data_prod:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+volumes:
+  db_data_prod:

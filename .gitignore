@@ -1,0 +1,60 @@
+# General OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Environment Variables
+.env
+.env.*.local
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Build and output directories
+dist/
+build/
+out/
+.tmp/
+
+# Nginx
+nginx.conf
+*.pem
+*.key
+*.crt
+certs/
+logs/
+
+# .NET Specific
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.vs
+.vscode/
+
+# ASP.NET Core configuration
+appsettings.Development.json
+
+# Publish output
+publish/
+wwwroot/
+
+# React-specific files
+.eslintcache
+.cache/
+coverage/
+*.webp
+*.jpg
+*.png
+*.svg
+.idea/
+
+#db volumes
+db_data_prod/
+db_data_dev/

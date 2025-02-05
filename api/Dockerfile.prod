@@ -1,0 +1,28 @@
+# Use the official .NET runtime as a base image for production
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+# Build stage using the .NET SDK
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+# Copy the solution and project files
+COPY ["BabyNamesApi.csproj", "./"]
+
+# Restore dependencies
+RUN dotnet restore
+
+# Copy the rest of the application source code
+COPY . .
+
+# Build the application in release mode
+RUN dotnet publish -c Release -o /app/publish
+
+# Final production image
+FROM base AS final
+WORKDIR /app
+COPY --from=build /app/publish .
+
+# Set the entry point to your application
+ENTRYPOINT ["dotnet", "BabyNamesApi.dll"]

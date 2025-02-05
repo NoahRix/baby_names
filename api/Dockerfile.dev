@@ -1,0 +1,14 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS development
+WORKDIR /app
+
+# Copy the project files
+COPY . .
+
+# Install dependencies
+RUN dotnet restore
+
+EXPOSE 5159
+
+# Use `dotnet run` for live development
+ENTRYPOINT ["dotnet", "run", "--no-launch-profile", "--urls", "http://0.0.0.0:5159"]
+
