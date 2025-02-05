@@ -65,8 +65,8 @@ services:
     networks:
       - dev-net
     volumes:
-      - db_data_dev:/var/lib/mysql
-      - ./my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./db/db_data_dev:/var/lib/mysql
+      - ./db/my.cnf_dev:/etc/mysql/conf.d/my.cnf
+      - ./db/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
 volumes:
   db_data_dev:
