@@ -37,6 +37,7 @@ obj/
 *.userosscache
 *.vs
 .vscode/
+*.sln
 
 # ASP.NET Core configuration
 appsettings.Development.json
