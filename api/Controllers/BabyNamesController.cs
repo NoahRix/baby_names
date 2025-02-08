@@ -1,3 +1,4 @@
+using BabyNameApi.Dtos;
 using BabyNamesApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,6 +41,13 @@ namespace BabyNameApi.Controllers
         {
             var count = _babyNameService.DeleteAll();
             return Ok(count);
-        }        
+        }       
+
+        [HttpGet("min-max-years-using-state")]
+        public IActionResult MinMaxYearsUsingState(string stateCode)
+        {
+            MinMaxYearDto minMaxYearDto = _babyNameService.MinMaxYearsUsingState(stateCode);
+            return Ok(minMaxYearDto);
+        }            
     }
 }

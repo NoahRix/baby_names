@@ -1,19 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import USMap from './components/USMap/USMap';
 import { Box } from '@mui/material';
 import NumericSlider from './components/USMap/NumericalSlider';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme'; // Import the custom theme
+// import theme from './theme'; // Import the custom theme
+import { betterFetch } from '@better-fetch/fetch';
+
 
 function App() {
+  const [selectedStateCode, setSelectedStateCode] = useState("IL");
+  const [selectedStateMinYear, setSelectedStateMinYear] = useState(0);
+  const [selectedStateMaxYear, setSelectedStateMaxYear] = useState(0);
+
+  const getMinMaxYearUsingStateCode = async () => {
+    const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/min-max-years-using-state?stateCode=${selectedStateCode}`);
+    setSelectedStateMinYear(data.minYear);
+    setSelectedStateMaxYear(data.maxYear);
+    console.log(data);
+  }
+
+  useEffect(() => {
+    getMinMaxYearUsingStateCode();
+  }, [selectedStateCode]);
+
   return (
-    <ThemeProvider theme={theme}> {/* Wrap the application with the theme */}
-      <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
-        <USMap/>
-        <NumericSlider></NumericSlider>
-      </Box>
-    </ThemeProvider>
+    // <ThemeProvider theme={theme}> {/* Wrap the application with the theme */}
+
+    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+      <USMap setSelectedStateCode={setSelectedStateCode} />
+      <NumericSlider selectedStateMinYear={selectedStateMinYear} selectedStateMaxYear={selectedStateMaxYear}></NumericSlider>
+    </Box>
+    // </ThemeProvider>
   );
 }
 

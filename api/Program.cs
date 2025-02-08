@@ -44,11 +44,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Baby Names API v1");
-        c.RoutePrefix = "swagger"; // Serve Swagger UI at the root
+        // c.RoutePrefix = "swagger"; // Serve Swagger UI at the root
     });
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.MapControllers();
 

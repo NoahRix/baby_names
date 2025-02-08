@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BabyNameApi.Dtos;
 using BabyNamesApi.Data;
 using BabyNamesApi.Models;
 using Microsoft.EntityFrameworkCore;
@@ -91,6 +92,19 @@ namespace BabyNamesApi.Services
         public int DeleteAll()
         {
             return _dbContext.Database.ExecuteSqlRaw("DELETE FROM baby_names");
-        }        
+        } 
+
+        public MinMaxYearDto MinMaxYearsUsingState(string stateCode)
+        {
+            int minYear = _dbContext.BabyNames
+                .Where(x => x.StateCode == stateCode)
+                .Min(x => x.BirthYear);
+
+            int maxYear = _dbContext.BabyNames
+                .Where(x => x.StateCode == stateCode)
+                .Max(x => x.BirthYear);
+
+            return new MinMaxYearDto {MinYear = minYear, MaxYear = maxYear};
+        }         
     }
 }
