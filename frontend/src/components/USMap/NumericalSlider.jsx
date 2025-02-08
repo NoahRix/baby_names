@@ -13,18 +13,13 @@ function NumericSlider({ selectedStateMinYear, selectedStateMaxYear }) {
 
   return (
     <div style={{ padding: 20, width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      {/* Title at the top */}
       <Typography variant="h6" gutterBottom>
         Select a year
       </Typography>
-
-      {/* Min and Max year labels */}
       <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="body2">{selectedStateMinYear}</Typography>
         <Typography variant="body2">{selectedStateMaxYear}</Typography>
       </div>
-      
-      {/* Slider */}
       <Slider
         value={year}
         onChange={handleSliderChange}
@@ -46,11 +41,6 @@ function NumericSlider({ selectedStateMinYear, selectedStateMaxYear }) {
           },
         }}
       />
-      
-      {/* Centered Year Text */}
-      <Typography variant="h6" gutterBottom style={{ textAlign: 'center' }}>
-        Year: {year}
-      </Typography>
     </div>
   );
 }
