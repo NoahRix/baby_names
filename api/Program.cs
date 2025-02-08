@@ -30,12 +30,9 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// builder.WebHost.UseKestrel(options =>
-// {
-//     options.ListenAnyIP(5159);  // Binding to all network interfaces
-// });
-
 var app = builder.Build();
+
+app.UsePathBase("/api");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -43,12 +40,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Baby Names API v1");
-        // c.RoutePrefix = "swagger"; // Serve Swagger UI at the root
+        c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Baby Names API v1");
+        c.RoutePrefix = "swagger"; // Serve Swagger UI at the root
     });
 }
-
-// app.UseHttpsRedirection();
 
 app.MapControllers();
 
