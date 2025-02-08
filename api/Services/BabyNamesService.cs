@@ -96,6 +96,9 @@ namespace BabyNamesApi.Services
 
         public MinMaxYearDto MinMaxYearsUsingState(string stateCode)
         {
+            if (string.IsNullOrWhiteSpace(stateCode))
+                return new MinMaxYearDto {MinYear = 0, MaxYear = 0};
+
             int minYear = _dbContext.BabyNames
                 .Where(x => x.StateCode == stateCode)
                 .Min(x => x.BirthYear);
