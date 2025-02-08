@@ -14,9 +14,12 @@ function App() {
   const [selectedStateMaxYear, setSelectedStateMaxYear] = useState(0);
 
   const getMinMaxYearUsingStateCode = async () => {
+    if(!selectedStateCode)
+      return;
+    
     const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/min-max-years-using-state?stateCode=${selectedStateCode}`);
     setSelectedStateMinYear(data?.minYear ?? 0);
-    setSelectedStateMaxYear(data?.maxYear ?? 0);
+    setSelectedStateMaxYear(data?.maxYear ?? 0 );
     console.log(data);
   }
 
@@ -26,10 +29,9 @@ function App() {
 
   return (
     // <ThemeProvider theme={theme}> {/* Wrap the application with the theme */}
-
     <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
       <USMap setSelectedStateCode={setSelectedStateCode} />
-      <NumericSlider selectedStateMinYear={selectedStateMinYear} selectedStateMaxYear={selectedStateMaxYear}></NumericSlider>
+      { selectedStateCode && <NumericSlider selectedStateMinYear={selectedStateMinYear} selectedStateMaxYear={selectedStateMaxYear}></NumericSlider> }
     </Box>
     // </ThemeProvider>
   );
