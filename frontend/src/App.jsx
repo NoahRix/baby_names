@@ -9,14 +9,14 @@ import { betterFetch } from '@better-fetch/fetch';
 
 
 function App() {
-  const [selectedStateCode, setSelectedStateCode] = useState("IL");
+  const [selectedStateCode, setSelectedStateCode] = useState(null);
   const [selectedStateMinYear, setSelectedStateMinYear] = useState(0);
   const [selectedStateMaxYear, setSelectedStateMaxYear] = useState(0);
 
   const getMinMaxYearUsingStateCode = async () => {
     const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/min-max-years-using-state?stateCode=${selectedStateCode}`);
-    setSelectedStateMinYear(data.minYear);
-    setSelectedStateMaxYear(data.maxYear);
+    setSelectedStateMinYear(data?.minYear ?? 0);
+    setSelectedStateMaxYear(data?.maxYear ?? 0);
     console.log(data);
   }
 
