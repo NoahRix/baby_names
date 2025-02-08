@@ -21,7 +21,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.dev
     volumes:
-      - ./frontend:/app
+      - ./frontend/src:/app/src
     environment:
       - CHOKIDAR_USEPOLLING=true
     restart: unless-stopped
