@@ -2,11 +2,17 @@ import React, { useEffect, useState } from 'react';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 
-function NumericSlider({ selectedStateMinYear, selectedStateMaxYear }) {
+function NumericSlider({ selectedStateMinYear, selectedStateMaxYear, onYearChange }) {
   const [year, setYear] = useState(selectedStateMinYear); // Set the initial value of the slider to min year
 
   const handleSliderChange = (event, newValue) => {
     setYear(newValue);
+  };
+  
+  const handleSliderCommitChange = (event,  year) => {
+    setYear(year);
+    console.log("commit", year);
+    onYearChange(year);
   };
 
   useEffect(() => {setYear(selectedStateMinYear)}, [selectedStateMinYear]);
@@ -23,6 +29,7 @@ function NumericSlider({ selectedStateMinYear, selectedStateMaxYear }) {
       <Slider
         value={year}
         onChange={handleSliderChange}
+        onChangeCommitted={handleSliderCommitChange}
         aria-labelledby="input-slider"
         min={selectedStateMinYear}
         max={selectedStateMaxYear}
