@@ -21,7 +21,6 @@ builder.Services.AddScoped<BabyNamesService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    // Configure the Swagger UI if needed
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Baby Names API",
@@ -32,16 +31,16 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-app.UsePathBase("/api");
+// Remove UsePathBase("/api") to avoid duplication
+// app.UsePathBase("/api");
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Baby Names API v1");
-        c.RoutePrefix = "swagger"; // Serve Swagger UI at the root
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Baby Names API v1");
+        c.RoutePrefix = "swagger"; // Serve Swagger UI at "/swagger"
     });
 }
 

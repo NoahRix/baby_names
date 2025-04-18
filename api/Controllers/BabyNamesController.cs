@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BabyNameApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class BabyNamesController : ControllerBase
     {
