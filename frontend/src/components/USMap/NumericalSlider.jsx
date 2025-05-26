@@ -9,19 +9,20 @@ function NumericSlider({ selectedStateMinYear, selectedStateMaxYear, onYearChang
     setYear(newValue);
   };
   
-  const handleSliderCommitChange = (event,  year) => {
-    setYear(year);
-    console.log("commit", year);
-    onYearChange(year);
+  const handleSliderCommitChange = (event,  selectedYear) => {
+    setYear(selectedYear);
+    onYearChange(selectedYear);
   };
 
-  useEffect(() => {setYear(selectedStateMinYear)}, [selectedStateMinYear]);
+  useEffect(() => {
+    if (!selectedStateMinYear)
+      return; 
+
+    setYear(selectedStateMinYear);
+  }, [selectedStateMinYear]);
 
   return (
-    <div style={{ padding: 20, width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Typography variant="h6" gutterBottom>
-        Select a year
-      </Typography>
+    <div style={{ padding: 20, width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>   
       <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="body2">{selectedStateMinYear}</Typography>
         <Typography variant="body2">{selectedStateMaxYear}</Typography>

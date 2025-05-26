@@ -19,10 +19,6 @@ const USMap = ({setSelectedStateCode}) => {
     setSelectedStateCode(state.StateCode);
   };
 
-  // useState(() => { 
-  //   setClickedState()
-  // }, []);
-
   return (
     <Box
       sx={{
@@ -47,7 +43,7 @@ const USMap = ({setSelectedStateCode}) => {
               onClick={() => handleClick(state)}
               style={{
                 cursor: 'pointer',
-                fill: clickedState === state.StateName ? 'red' : hoveredState === state.StateName ? '#666' : '#aaa',
+                fill: clickedState === state.StateName ? 'orange' : hoveredState === state.StateName ? '#666' : '#aaa',
               }}           
               />
             </Tooltip>
