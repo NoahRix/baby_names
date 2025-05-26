@@ -65,14 +65,17 @@ function App() {
     }
   }, [selectedStateCode, selectedStateMinYear, selectedStateMaxYear]);
 
-  //TESTING
+  // Scroll to the bottom of the page when the year or selected state changes
   useEffect(() => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    
+    //TESTING
     console.log("Selected State Code:", selectedStateCode);
     console.log("Selected State Min Year:", selectedStateMinYear);
     console.log("Selected State Max Year:", selectedStateMaxYear);
     console.log("Selected Year:", year);
+    //TESTING
   }, [year, selectedStateCode, selectedStateMinYear, selectedStateMaxYear]);
-  //TESTING
 
 
   return (
