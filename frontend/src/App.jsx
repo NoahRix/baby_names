@@ -6,6 +6,7 @@ import NumericSlider from './components/USMap/NumericalSlider';
 import { ThemeProvider } from '@mui/material/styles';
 // import theme from './theme'; // Import the custom theme
 import { betterFetch } from '@better-fetch/fetch';
+import { PieChart } from '@mui/x-charts/PieChart';
 
 function App() {
   const [selectedStateCode, setSelectedStateCode] = useState(null);
@@ -37,11 +38,6 @@ function App() {
   }
 
   const onYearChange = (selectedYear) => {
-
-    ///TESTING
-    console.log("onYearChange called with selectedYear:", selectedYear);
-    ///TESTING
-
     setYear(selectedYear);
     getMaleFemaleCounts(selectedYear);
   }
@@ -70,10 +66,10 @@ function App() {
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     
     //TESTING
-    console.log("Selected State Code:", selectedStateCode);
-    console.log("Selected State Min Year:", selectedStateMinYear);
-    console.log("Selected State Max Year:", selectedStateMaxYear);
-    console.log("Selected Year:", year);
+    // console.log("Selected State Code:", selectedStateCode);
+    // console.log("Selected State Min Year:", selectedStateMinYear);
+    // console.log("Selected State Max Year:", selectedStateMaxYear);
+    // console.log("Selected Year:", year);
     //TESTING
   }, [year, selectedStateCode, selectedStateMinYear, selectedStateMaxYear]);
 
@@ -93,11 +89,41 @@ function App() {
         </>
       }
         {year &&
-        <Box display="flex" justifyContent="space-between" width="50%" padding={2} style={{ backgroundColor: '#f0f0f0' }}>
+        <>
+        <Box display="flex" justifyContent="space-around" width="90%" padding={2} style={{ backgroundColor: '#f0f0f0' }}>
           <Typography>Distinct Male Name Count: {selectedMaleYearState?.toLocaleString('en-US')}</Typography>
           <Typography>Distinct Female Name Count: {selectedFemaleYearState?.toLocaleString('en-US')}</Typography>
         </Box>
-        }
+        <Box display="flex" justifyContent="space-between" width="90%" padding={2} style={{ backgroundColor: '#f0f0f0' }}>
+        <PieChart
+          series={[
+            {
+              data: [
+                { id: 0, value: 33, label: 'series A' },
+                { id: 1, value: 33, label: 'series B' },
+                { id: 2, value: 33, label: 'series C' },
+              ],
+            },
+          ]}
+          width={300}
+          height={300}
+          />
+        <PieChart
+          series={[
+            {
+              data: [
+                { id: 0, value: 10, label: 'series A' },
+                { id: 1, value: 15, label: 'series B' },
+                { id: 2, value: 20, label: 'series C' },
+              ],
+            },
+          ]}
+          width={300}
+          height={300}
+          />                
+          </Box>
+        </>
+        }  
     </Box>
     // </ThemeProvider>
   );
