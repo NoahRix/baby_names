@@ -41,13 +41,20 @@ namespace BabyNameApi.Controllers
         {
             var count = _babyNameService.DeleteAll();
             return Ok(count);
-        }       
+        }
 
         [HttpGet("min-max-years-using-state")]
         public IActionResult MinMaxYearsUsingState(string stateCode)
         {
             MinMaxYearDto minMaxYearDto = _babyNameService.MinMaxYearsUsingState(stateCode);
             return Ok(minMaxYearDto);
-        }            
+        }
+
+        [HttpGet("male-female-counts")]
+        public IActionResult MaleFemaleCounts(string stateCode, int year)
+        {
+            var counts = _babyNameService.GetMaleFemaleCount(stateCode, year);
+            return Ok(counts);
+        }       
     }
 }
