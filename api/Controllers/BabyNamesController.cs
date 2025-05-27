@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BabyNameApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class BabyNamesController : ControllerBase
     {
@@ -56,5 +56,12 @@ namespace BabyNameApi.Controllers
             var counts = _babyNameService.GetMaleFemaleCount(stateCode, year);
             return Ok(counts);
         }       
+
+        [HttpGet("top-popular-male-female-name-counts")]
+        public IActionResult TopPopularMaleFemaleCounts(string stateCode, int year)
+        {
+            var data = _babyNameService.TopPopularMaleFemaleCounts(stateCode, year);
+            return Ok(data);
+        }           
     }
 }

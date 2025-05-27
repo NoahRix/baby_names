@@ -125,5 +125,21 @@ namespace BabyNamesApi.Services
 
             return new Tuple<int, int>(maleCount, femaleCount);
         }
+        
+        public Tuple<int, int> TopPopularMaleFemaleCounts(string stateCode, int year)
+        {
+            if (string.IsNullOrWhiteSpace(stateCode))
+                return new Tuple<int, int>(0, 0);
+
+            var maleCount = _dbContext.BabyNames
+                .Where(x => x.StateCode == stateCode && x.BirthYear == year && x.GenderCode == "M")
+                .Sum(x => x.NameCount);
+
+            var femaleCount = _dbContext.BabyNames
+                .Where(x => x.StateCode == stateCode && x.BirthYear == year && x.GenderCode == "F")
+                .Sum(x => x.NameCount);
+
+            return new Tuple<int, int>(maleCount, femaleCount);
+        }
     }
 }
