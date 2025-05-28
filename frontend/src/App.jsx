@@ -101,11 +101,7 @@ function App() {
             <PieChart
               series={[
                 {
-                  data: [
-                    { id: 0, value: 33, label: 'series A' },
-                    { id: 1, value: 33, label: 'series B' },
-                    { id: 2, value: 33, label: 'series C' },
-                  ],
+                  data: topPopularMaleFemaleNameCounts.male
                 },
               ]}
               width={300}
@@ -114,11 +110,7 @@ function App() {
             <PieChart
               series={[
                 {
-                  data: [
-                    { id: 0, value: 10, label: 'series A' },
-                    { id: 1, value: 15, label: 'series B' },
-                    { id: 2, value: 20, label: 'series C' },
-                  ],
+                  data: topPopularMaleFemaleNameCounts.female
                 },
               ]}
               width={300}
