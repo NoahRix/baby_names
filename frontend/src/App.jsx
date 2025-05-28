@@ -15,6 +15,7 @@ function App() {
   const [year, setYear] = useState(null); // Set the initial value of the slider to min year
   const [selectedMaleYearState, setSelectedMaleYearState] = useState(null); 
   const [selectedFemaleYearState, setSelectedFemaleYearState] = useState(null); 
+  const [topPopularMaleFemaleNameCounts, setTopPopularMaleFemaleNameCounts] = useState(null); 
 
   const getMinMaxYearUsingStateCode = async () => {
     if (!selectedStateCode)
@@ -37,6 +38,17 @@ function App() {
     setSelectedFemaleYearState(data?.item2 ?? 0);
   }
 
+  const getTopPopularMaleFemaleNameCounts = async () => {
+    if (!selectedStateCode)
+      return;
+
+    if (!year)
+      return;
+
+    const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/top-popular-male-female-name-counts?stateCode=${selectedStateCode}&year=${year}`);
+    setTopPopularMaleFemaleNameCounts(data ?? null);
+  }
+
   const onYearChange = (selectedYear) => {
     setYear(selectedYear);
     getMaleFemaleCounts(selectedYear);
@@ -52,6 +64,7 @@ function App() {
     if (selectedStateCode && selectedStateMinYear && selectedStateMaxYear) {
       if(year >= selectedStateMinYear && year <= selectedStateMaxYear) {
         getMaleFemaleCounts(year);
+        getTopPopularMaleFemaleNameCounts(year);
       }
       else {
         // If the year is out of bounds, reset it to the minimum year
@@ -59,20 +72,7 @@ function App() {
         getMaleFemaleCounts(selectedStateMinYear);
       }
     }
-  }, [selectedStateCode, selectedStateMinYear, selectedStateMaxYear]);
-
-  // Scroll to the bottom of the page when the year or selected state changes
-  useEffect(() => {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    
-    //TESTING
-    // console.log("Selected State Code:", selectedStateCode);
-    // console.log("Selected State Min Year:", selectedStateMinYear);
-    // console.log("Selected State Max Year:", selectedStateMaxYear);
-    // console.log("Selected Year:", year);
-    //TESTING
-  }, [year, selectedStateCode, selectedStateMinYear, selectedStateMaxYear]);
-
+  }, [selectedStateCode, selectedStateMinYear, selectedStateMaxYear, year]);
 
   return (
     // <ThemeProvider theme={theme}> {/* Wrap the application with the theme */}
@@ -95,32 +95,37 @@ function App() {
           <Typography>Distinct Female Name Count: {selectedFemaleYearState?.toLocaleString('en-US')}</Typography>
         </Box>
         <Box display="flex" justifyContent="space-between" width="90%" padding={2} style={{ backgroundColor: '#f0f0f0' }}>
-        <PieChart
-          series={[
-            {
-              data: [
-                { id: 0, value: 33, label: 'series A' },
-                { id: 1, value: 33, label: 'series B' },
-                { id: 2, value: 33, label: 'series C' },
-              ],
-            },
-          ]}
-          width={300}
-          height={300}
-          />
-        <PieChart
-          series={[
-            {
-              data: [
-                { id: 0, value: 10, label: 'series A' },
-                { id: 1, value: 15, label: 'series B' },
-                { id: 2, value: 20, label: 'series C' },
-              ],
-            },
-          ]}
-          width={300}
-          height={300}
-          />                
+        {
+          topPopularMaleFemaleNameCounts && 
+          <>
+            <PieChart
+              series={[
+                {
+                  data: [
+                    { id: 0, value: 33, label: 'series A' },
+                    { id: 1, value: 33, label: 'series B' },
+                    { id: 2, value: 33, label: 'series C' },
+                  ],
+                },
+              ]}
+              width={300}
+              height={300}
+              />
+            <PieChart
+              series={[
+                {
+                  data: [
+                    { id: 0, value: 10, label: 'series A' },
+                    { id: 1, value: 15, label: 'series B' },
+                    { id: 2, value: 20, label: 'series C' },
+                  ],
+                },
+              ]}
+              width={300}
+              height={300}
+              />                
+          </>
+          }
           </Box>
         </>
         }  

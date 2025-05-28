@@ -1,4 +1,5 @@
 using BabyNameApi.Dtos;
+using BabyNamesApi.Models;
 using BabyNamesApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -60,8 +61,8 @@ namespace BabyNameApi.Controllers
         [HttpGet("top-popular-male-female-name-counts")]
         public IActionResult TopPopularMaleFemaleCounts(string stateCode, int year)
         {
-            var data = _babyNameService.TopPopularMaleFemaleCounts(stateCode, year);
-            return Ok(data);
+            TopBabyNameCounts topBabyNameCounts = _babyNameService.TopPopularMaleFemaleCounts(stateCode, year);
+            return Ok(topBabyNameCounts);
         }           
     }
 }

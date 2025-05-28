@@ -125,21 +125,49 @@ namespace BabyNamesApi.Services
 
             return new Tuple<int, int>(maleCount, femaleCount);
         }
-        
-        public Tuple<int, int> TopPopularMaleFemaleCounts(string stateCode, int year)
+
+        public TopBabyNameCounts TopPopularMaleFemaleCounts(string stateCode, int year)
         {
+            const int top = 5;
+
             if (string.IsNullOrWhiteSpace(stateCode))
-                return new Tuple<int, int>(0, 0);
+                throw new ArgumentException("State code cannot be null or empty.", nameof(stateCode));
 
-            var maleCount = _dbContext.BabyNames
+            if (year <= 0)
+                throw new ArgumentException("Year must be a positive integer.", nameof(year));
+
+            TopBabyNameCounts topBabyNameCounts = new TopBabyNameCounts();
+
+            IEnumerable<BabyName> enumeratedTopMales = _dbContext.BabyNames
                 .Where(x => x.StateCode == stateCode && x.BirthYear == year && x.GenderCode == "M")
-                .Sum(x => x.NameCount);
+                .OrderByDescending(x => x.NameCount)
+                .Take(top)
+                .AsEnumerable();
 
-            var femaleCount = _dbContext.BabyNames
+            topBabyNameCounts.Male = enumeratedTopMales
+                .Select((x, i) => new PieChartDateItem
+                {
+                    Id = i + 1, // 1-based index for Id
+                    Value = x.NameCount,
+                    Label = x.FirstName
+                }); 
+
+
+            IEnumerable<BabyName> enumeratedTopFemales = _dbContext.BabyNames
                 .Where(x => x.StateCode == stateCode && x.BirthYear == year && x.GenderCode == "F")
-                .Sum(x => x.NameCount);
+                .OrderByDescending(x => x.NameCount)
+                .Take(top)
+                .AsEnumerable();
 
-            return new Tuple<int, int>(maleCount, femaleCount);
+            topBabyNameCounts.Female = enumeratedTopFemales
+                .Select((x, i) => new PieChartDateItem
+                {
+                    Id = i + 1, // 1-based index for Id
+                    Value = x.NameCount,
+                    Label = x.FirstName
+                }); 
+
+            return topBabyNameCounts;
         }
     }
 }
