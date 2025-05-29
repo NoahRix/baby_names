@@ -88,7 +88,7 @@ function App() {
         }
       </Box>
       {year && topPopularMaleFemaleNameCounts &&
-        <Grid2 container spacing={6} justifyContent="center" alignItems="center" style={{ width: '800px', maxWidth: '100%' }}>
+        <Grid2 container spacing={6} justifyContent="center" alignItems="center" style={{ width: '90%', maxWidth: '100%'}}>
           <Grid2 xs={6} textAlign='center'>
             <Typography>Distinct Male Name Count: {selectedMaleYearState?.toLocaleString('en-US')}</Typography>
             <PieChartWithCenterLabel title={`Top 5 Male Names for ${selectedStateCode}`} data={topPopularMaleFemaleNameCounts.male} />
