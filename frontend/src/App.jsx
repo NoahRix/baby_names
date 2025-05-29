@@ -6,16 +6,16 @@ import NumericSlider from './components/USMap/NumericalSlider';
 import { ThemeProvider } from '@mui/material/styles';
 // import theme from './theme'; // Import the custom theme
 import { betterFetch } from '@better-fetch/fetch';
-import { PieChart } from '@mui/x-charts/PieChart';
+import PieChartWithCenterLabel from './components/PieChartWithCenterLabel';
 
 function App() {
   const [selectedStateCode, setSelectedStateCode] = useState(null);
   const [selectedStateMinYear, setSelectedStateMinYear] = useState(0);
   const [selectedStateMaxYear, setSelectedStateMaxYear] = useState(0);
   const [year, setYear] = useState(null); // Set the initial value of the slider to min year
-  const [selectedMaleYearState, setSelectedMaleYearState] = useState(null); 
-  const [selectedFemaleYearState, setSelectedFemaleYearState] = useState(null); 
-  const [topPopularMaleFemaleNameCounts, setTopPopularMaleFemaleNameCounts] = useState(null); 
+  const [selectedMaleYearState, setSelectedMaleYearState] = useState(null);
+  const [selectedFemaleYearState, setSelectedFemaleYearState] = useState(null);
+  const [topPopularMaleFemaleNameCounts, setTopPopularMaleFemaleNameCounts] = useState(null);
 
   const getMinMaxYearUsingStateCode = async () => {
     if (!selectedStateCode)
@@ -62,7 +62,7 @@ function App() {
   // and fetch all needed data
   useEffect(() => {
     if (selectedStateCode && selectedStateMinYear && selectedStateMaxYear) {
-      if(year >= selectedStateMinYear && year <= selectedStateMaxYear) {
+      if (year >= selectedStateMinYear && year <= selectedStateMaxYear) {
         getMaleFemaleCounts(year);
         getTopPopularMaleFemaleNameCounts(year);
       }
@@ -79,48 +79,28 @@ function App() {
     <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
       <USMap setSelectedStateCode={setSelectedStateCode} />
       {
-        selectedStateCode && 
+        selectedStateCode &&
         <>
           <Typography variant="h6" gutterBottom>
             Select a year
-          </Typography>          
+          </Typography>
           <Typography>{year}</Typography>
           <NumericSlider selectedStateMinYear={selectedStateMinYear} selectedStateMaxYear={selectedStateMaxYear} onYearChange={onYearChange}></NumericSlider>
         </>
       }
-        {year &&
-        <>
-        <Box display="flex" justifyContent="space-around" width="90%" padding={2} style={{ backgroundColor: '#f0f0f0' }}>
-          <Typography>Distinct Male Name Count: {selectedMaleYearState?.toLocaleString('en-US')}</Typography>
-          <Typography>Distinct Female Name Count: {selectedFemaleYearState?.toLocaleString('en-US')}</Typography>
-        </Box>
-        <Box display="flex" justifyContent="space-between" width="90%" padding={2} style={{ backgroundColor: '#f0f0f0' }}>
-        {
-          topPopularMaleFemaleNameCounts && 
-          <>
-            <PieChart
-              series={[
-                {
-                  data: topPopularMaleFemaleNameCounts.male
-                },
-              ]}
-              width={300}
-              height={300}
-              />
-            <PieChart
-              series={[
-                {
-                  data: topPopularMaleFemaleNameCounts.female
-                },
-              ]}
-              width={300}
-              height={300}
-              />                
-          </>
+      {year &&
+        <Box display="flex" flexDirection="column" textAlign='center' justifyContent="space-between" width="90%" padding={2}>
+          {
+            topPopularMaleFemaleNameCounts &&
+            <>
+              <Typography>Distinct Male Name Count: {selectedMaleYearState?.toLocaleString('en-US')}</Typography>
+              <PieChartWithCenterLabel title={`Top 5 Male Names for ${selectedStateCode}`} data={topPopularMaleFemaleNameCounts.male} />
+              <Typography>Distinct Female Name Count: {selectedFemaleYearState?.toLocaleString('en-US')}</Typography>
+              <PieChartWithCenterLabel title={`Top 5 Female Names for ${selectedStateCode}`} data={topPopularMaleFemaleNameCounts.female} />
+            </>
           }
-          </Box>
-        </>
-        }  
+        </Box>
+      }
     </Box>
     // </ThemeProvider>
   );
