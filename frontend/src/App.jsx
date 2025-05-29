@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import USMap from './components/USMap/USMap';
-import { Box } from '@mui/material';
+import { Box, Grid2 } from '@mui/material';
 import NumericSlider from './components/USMap/NumericalSlider';
-import { ThemeProvider } from '@mui/material/styles';
-// import theme from './theme'; // Import the custom theme
 import { betterFetch } from '@better-fetch/fetch';
 import PieChartWithCenterLabel from './components/PieChartWithCenterLabel';
 
@@ -75,34 +73,33 @@ function App() {
   }, [selectedStateCode, selectedStateMinYear, selectedStateMaxYear, year]);
 
   return (
-    // <ThemeProvider theme={theme}> {/* Wrap the application with the theme */}
-    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
-      <USMap setSelectedStateCode={setSelectedStateCode} />
-      {
-        selectedStateCode &&
-        <>
-          <Typography variant="h6" gutterBottom>
-            Select a year
-          </Typography>
-          <Typography>{year}</Typography>
-          <NumericSlider selectedStateMinYear={selectedStateMinYear} selectedStateMaxYear={selectedStateMaxYear} onYearChange={onYearChange}></NumericSlider>
-        </>
-      }
-      {year &&
-        <Box display="flex" flexDirection="column" textAlign='center' justifyContent="space-between" width="90%" padding={2}>
-          {
-            topPopularMaleFemaleNameCounts &&
-            <>
-              <Typography>Distinct Male Name Count: {selectedMaleYearState?.toLocaleString('en-US')}</Typography>
-              <PieChartWithCenterLabel title={`Top 5 Male Names for ${selectedStateCode}`} data={topPopularMaleFemaleNameCounts.male} />
-              <Typography>Distinct Female Name Count: {selectedFemaleYearState?.toLocaleString('en-US')}</Typography>
-              <PieChartWithCenterLabel title={`Top 5 Female Names for ${selectedStateCode}`} data={topPopularMaleFemaleNameCounts.female} />
-            </>
-          }
-        </Box>
+    <Box justifyContent={"center"} alignItems="center" display="flex" flexDirection="column" >
+      <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" style={{ width: '100%' }}>
+        <USMap setSelectedStateCode={setSelectedStateCode} />
+        {
+          selectedStateCode &&
+          <>
+            <Typography variant="h6" gutterBottom>
+              Select a year
+            </Typography>
+            <Typography>{year}</Typography>
+            <NumericSlider selectedStateMinYear={selectedStateMinYear} selectedStateMaxYear={selectedStateMaxYear} onYearChange={onYearChange}></NumericSlider>
+          </>
+        }
+      </Box>
+      {year && topPopularMaleFemaleNameCounts &&
+        <Grid2 container spacing={6} justifyContent="center" alignItems="center" style={{ width: '800px', maxWidth: '100%' }}>
+          <Grid2 xs={6} textAlign='center'>
+            <Typography>Distinct Male Name Count: {selectedMaleYearState?.toLocaleString('en-US')}</Typography>
+            <PieChartWithCenterLabel title={`Top 5 Male Names for ${selectedStateCode}`} data={topPopularMaleFemaleNameCounts.male} />
+          </Grid2>
+          <Grid2 xs={6} textAlign='center'>
+            <Typography>Distinct Female Name Count: {selectedFemaleYearState?.toLocaleString('en-US')}</Typography>
+            <PieChartWithCenterLabel title={`Top 5 Female Names for ${selectedStateCode}`} data={topPopularMaleFemaleNameCounts.female} />
+          </Grid2>
+        </Grid2>
       }
     </Box>
-    // </ThemeProvider>
   );
 }
 
