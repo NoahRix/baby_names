@@ -22,7 +22,7 @@ const USMap = ({setSelectedStateCode}) => {
   return (
     <Box
       sx={{
-        width: '80%',
+        width: '100%',
         maxWidth: '1600px',
         height: 'auto',
         margin: '0 auto', // Center the map horizontally
