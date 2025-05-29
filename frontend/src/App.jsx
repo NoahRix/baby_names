@@ -10,11 +10,12 @@ function App() {
   const [selectedStateCode, setSelectedStateCode] = useState(null);
   const [selectedStateMinYear, setSelectedStateMinYear] = useState(0);
   const [selectedStateMaxYear, setSelectedStateMaxYear] = useState(0);
-  const [year, setYear] = useState(null); // Set the initial value of the slider to min year
+  const [year, setYear] = useState(null); 
   const [selectedMaleYearState, setSelectedMaleYearState] = useState(null);
   const [selectedFemaleYearState, setSelectedFemaleYearState] = useState(null);
   const [topPopularMaleFemaleNameCounts, setTopPopularMaleFemaleNameCounts] = useState(null);
 
+  // Helper to get the minimum and maximum years for the selected state code.
   const getMinMaxYearUsingStateCode = async () => {
     if (!selectedStateCode)
       return;
@@ -24,6 +25,12 @@ function App() {
     setSelectedStateMaxYear(data?.maxYear ?? 0);
   }
 
+  // Fetch the minimum and maximum years when the selected state code changes.
+  useEffect(() => {
+    getMinMaxYearUsingStateCode();
+  }, [selectedStateCode]);
+
+  
   const getMaleFemaleCounts = async (selectedYear) => {
     if (!selectedStateCode)
       return;
@@ -36,6 +43,14 @@ function App() {
     setSelectedFemaleYearState(data?.item2 ?? 0);
   }
 
+  // Handle year change from the slider.
+  // This will update the year and fetch.
+  const onYearChange = (selectedYear) => {
+    setYear(selectedYear);
+    getMaleFemaleCounts(selectedYear);
+  }
+
+  // Fetch the top popular gendered names for the selected state code and year.
   const getTopPopularMaleFemaleNameCounts = async () => {
     if (!selectedStateCode)
       return;
@@ -46,15 +61,6 @@ function App() {
     const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/top-popular-male-female-name-counts?stateCode=${selectedStateCode}&year=${year}`);
     setTopPopularMaleFemaleNameCounts(data ?? null);
   }
-
-  const onYearChange = (selectedYear) => {
-    setYear(selectedYear);
-    getMaleFemaleCounts(selectedYear);
-  }
-
-  useEffect(() => {
-    getMinMaxYearUsingStateCode();
-  }, [selectedStateCode]);
 
   // Listen for changes in either the year or selectedStateCode
   // and fetch all needed data
