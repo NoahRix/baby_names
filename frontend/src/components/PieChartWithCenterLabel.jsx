@@ -5,8 +5,8 @@ import { styled } from '@mui/material/styles';
 import { Card } from '@mui/material';
 
 const size = {
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 300
 };
 
 const StyledText = styled('text')(({ theme }) => ({
@@ -30,7 +30,7 @@ function PieCenterLabel({ children }) {
 export default function PieChartWithCenterLabel({ data, title }) {
     return (
         <Card>
-            <PieChart series={[{ data, innerRadius: 80 }]} {...size}>
+            <PieChart series={[{ data, innerRadius: 120 }]} {...size}>
                 <PieCenterLabel>{title}</PieCenterLabel>
             </PieChart>
         </Card>
