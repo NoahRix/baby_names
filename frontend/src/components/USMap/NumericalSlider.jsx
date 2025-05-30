@@ -1,36 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
+import { useAppState } from '../../AppStateContext';
+import { betterFetch } from '@better-fetch/fetch';
 
-function NumericSlider({ selectedStateMinYear, selectedStateMaxYear, onYearChange }) {
-  const [year, setYear] = useState(selectedStateMinYear); // Set the initial value of the slider to min year
 
-  const handleSliderChange = (event, newValue) => {
-    setYear(newValue);
-  };
-  
-  const handleSliderCommitChange = (event,  selectedYear) => {
+function NumericSlider() {
+  const { setYear, selectedState, selectedStateMinYear, selectedStateMaxYear, setDistinctMaleCountForSelectedState, setDistinctFemaleCountForSelectedState } = useAppState();
+
+  const [selectedYear, setSelectedYear] = useState(null);
+
+  //Set the selected year when the slider value changes.
+  const handleYearChange = async (event, selectedYear) => {
     setYear(selectedYear);
-    onYearChange(selectedYear);
+
+    if (!selectedState)
+      return;
+
+    if (!selectedYear)
+      return;
+
+    const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/male-female-counts?stateCode=${selectedState.StateCode}&year=${selectedYear}`);
+
+    setDistinctMaleCountForSelectedState(data?.item1 ?? 0);
+    setDistinctFemaleCountForSelectedState(data?.item2 ?? 0);
   };
-
-  useEffect(() => {
-    if (!selectedStateMinYear)
-      return; 
-
-    setYear(selectedStateMinYear);
-  }, [selectedStateMinYear]);
 
   return (
-    <div style={{ padding: 20, width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>   
+    <div style={{ padding: 20, width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="body2">{selectedStateMinYear}</Typography>
         <Typography variant="body2">{selectedStateMaxYear}</Typography>
       </div>
       <Slider
-        value={year}
-        onChange={handleSliderChange}
-        onChangeCommitted={handleSliderCommitChange}
+        value={selectedYear ?? 0}
+        onChange={(event, newValue) => setSelectedYear(newValue)}
+        onChangeCommitted={handleYearChange}
         aria-labelledby="input-slider"
         min={selectedStateMinYear}
         max={selectedStateMaxYear}

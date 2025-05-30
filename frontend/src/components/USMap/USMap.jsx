@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import statesData from './us_states_paths.json';
 import { Box, Tooltip } from '@mui/material';
+import { useAppState } from '../../AppStateContext';
+import { betterFetch } from '@better-fetch/fetch';
 
-const USMap = ({setSelectedStateCode}) => {
+const USMap = () => {
+  const { setSelectedState, selectedState, setSelectedStateMinYear, setSelectedStateMaxYear, year, setYear } = useAppState();
   const [hoveredState, setHoveredState] = useState(null);
-  const [clickedState, setClickedState] = useState(null);
 
   const handleMouseEnter = (state) => {
     setHoveredState(state.StateName);
@@ -14,9 +16,19 @@ const USMap = ({setSelectedStateCode}) => {
     setHoveredState(null);
   };
 
-  const handleClick = (state) => {
-    setClickedState(state.StateName);
-    setSelectedStateCode(state.StateCode);
+  const handleClick = async (state) => {
+    setSelectedState(state);
+
+    if (!state)
+      return;
+
+    const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/min-max-years-using-state?stateCode=${state.StateCode}`);
+
+    if (!year)
+      setYear(data?.minYear ?? 0);
+
+    setSelectedStateMinYear(data?.minYear ?? 0);
+    setSelectedStateMaxYear(data?.maxYear ?? 0);
   };
 
   return (
@@ -30,9 +42,9 @@ const USMap = ({setSelectedStateCode}) => {
     >
       <svg viewBox="0 0 950 600" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: 'auto' }}>
         {statesData.map((state) => (
-          <Tooltip 
-            key={state.StateCode} 
-            title={state.StateName}             
+          <Tooltip
+            key={state.StateCode}
+            title={state.StateName}
             arrow>
             <path
               key={state.StateCode}
@@ -43,10 +55,10 @@ const USMap = ({setSelectedStateCode}) => {
               onClick={() => handleClick(state)}
               style={{
                 cursor: 'pointer',
-                fill: clickedState === state.StateName ? 'orange' : hoveredState === state.StateName ? '#666' : '#aaa',
-              }}           
-              />
-            </Tooltip>
+                fill: selectedState?.StateName === state.StateName ? 'orange' : hoveredState === state.StateName ? '#666' : '#aaa',
+              }}
+            />
+          </Tooltip>
         ))}
       </svg>
     </Box>
