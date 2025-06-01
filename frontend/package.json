@@ -15,8 +15,10 @@
     "@mui/material": "^6.4.3",
     "@mui/styled-engine": "^6.4.3",
     "@mui/x-charts": "^8.4.0",
+    "@mui/x-charts-pro": "^8.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "recharts": "^2.15.3",
     "zod": "^3.24.1"
   },
   "devDependencies": {

@@ -150,7 +150,7 @@ namespace BabyNamesApi.Services
                     Id = i + 1, // 1-based index for Id
                     Value = x.NameCount,
                     Label = x.FirstName
-                }); 
+                });
 
 
             IEnumerable<BabyName> enumeratedTopFemales = _dbContext.BabyNames
@@ -165,9 +165,29 @@ namespace BabyNamesApi.Services
                     Id = i + 1, // 1-based index for Id
                     Value = x.NameCount,
                     Label = x.FirstName
-                }); 
+                });
 
             return topBabyNameCounts;
+        }
+
+        public IEnumerable<YearGenderCount> GetYearGenderCounts(int minYear, int maxYear,  string stateCode)
+        {
+            if (minYear <= 0 || maxYear <= 0 || minYear > maxYear)
+                throw new ArgumentException("Invalid year range provided.");
+
+            IEnumerable<YearGenderCount> yearGenderCounts = _dbContext.BabyNames
+                .Where(x => x.BirthYear >= minYear && x.BirthYear <= maxYear && x.StateCode == stateCode)
+                .GroupBy(x => new { x.BirthYear })
+                .Select(g => new YearGenderCount
+                {
+                    Year = g.Key.BirthYear,
+                    MaleCount = g.Where(x => x.GenderCode == "M").Sum(x => x.NameCount),
+                    FemaleCount = g.Where(x => x.GenderCode == "F").Sum(x => x.NameCount)
+                })
+                .OrderBy(x => x.Year)
+                .AsEnumerable();
+
+            return yearGenderCounts;
         }
     }
 }

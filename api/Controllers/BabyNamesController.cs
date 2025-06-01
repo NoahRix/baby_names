@@ -56,7 +56,7 @@ namespace BabyNameApi.Controllers
         {
             var counts = _babyNameService.GetMaleFemaleCount(stateCode, year);
             return Ok(counts);
-        }       
+        }
 
         [HttpGet("top-popular-male-female-name-counts")]
         public IActionResult TopPopularMaleFemaleCounts(string stateCode, int year)
@@ -64,5 +64,12 @@ namespace BabyNameApi.Controllers
             TopBabyNameCounts topBabyNameCounts = _babyNameService.TopPopularMaleFemaleCounts(stateCode, year);
             return Ok(topBabyNameCounts);
         }           
+        
+        [HttpGet("year-gender-counts")]
+        public IActionResult YearGenderCount(int minYear, int maxYear, string stateCode)
+        {
+            IEnumerable<YearGenderCount> yearGenderCounts = _babyNameService.GetYearGenderCounts(minYear, maxYear, stateCode);
+            return Ok(yearGenderCounts);
+        }
     }
 }
