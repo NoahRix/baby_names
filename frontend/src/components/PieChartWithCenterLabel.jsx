@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
-import { Card } from '@mui/material';
+import { Card, Box } from '@mui/material';
 
 const size = {
     width: 300,
@@ -29,7 +29,7 @@ function PieCenterLabel({ children }) {
 
 export default function PieChartWithCenterLabel({ data, title }) {
     return (
-        <Card>
+        <Card shadow={2}>
             <PieChart series={[{ data, innerRadius: 120 }]} {...size}>
                 <PieCenterLabel>{title}</PieCenterLabel>
             </PieChart>

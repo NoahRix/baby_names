@@ -27,7 +27,7 @@ function NumericSlider() {
   };
 
   return (
-    <div style={{ padding: 20, width: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ padding: 20, width: 1600, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="body2">{selectedStateMinYear}</Typography>
         <Typography variant="body2">{selectedStateMaxYear}</Typography>
