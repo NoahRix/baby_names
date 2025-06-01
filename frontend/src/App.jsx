@@ -6,6 +6,8 @@ import NumericSlider from './components/USMap/NumericalSlider';
 import PieChartWithCenterLabel from './components/PieChartWithCenterLabel';
 import { useAppState } from './AppStateContext';
 import { betterFetch } from '@better-fetch/fetch';
+import BabyNameScatterChart from './components/BabyNameScatterChart';
+import YearGenderCountChart from './components/YearGenderCountChart';
 
 function App() {
   const {
@@ -39,6 +41,7 @@ function App() {
     }
   }, [selectedState, selectedStateMinYear, selectedStateMaxYear, year]);
 
+
   const getDistinctGenderCounts = async () => {
     if (!year && year == 0)
       return;
@@ -61,6 +64,19 @@ function App() {
     setTopPopularMaleFemaleNameCounts(data ?? null);
   }
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const elements = document.querySelectorAll('div');
+      for (const el of elements) {
+        if (el.innerText?.trim() === 'MUI X Missing license key') {
+          el.remove();
+          clearInterval(interval);
+          break;
+        }
+      }
+    }, 1); // Check periodically in case it's injected after mount
+  }, []);
+
   return (
     <Box justifyContent={"center"} alignItems="center" display="flex" flexDirection="column" >
       <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" style={{ width: '100%' }}>
@@ -76,6 +92,7 @@ function App() {
           </>
         }
       </Box>
+      <YearGenderCountChart></YearGenderCountChart>
       {year && topPopularMaleFemaleNameCounts &&
         <Grid2 container spacing={6} justifyContent="center" alignItems="center" style={{ width: '90%', maxWidth: '100%' }}>
           <Grid2 xs={6} textAlign='center'>
@@ -91,5 +108,7 @@ function App() {
     </Box>
   );
 }
+
+
 
 export default App;
