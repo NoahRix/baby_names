@@ -71,6 +71,7 @@ function App() {
         if (el.innerText?.trim() === 'MUI X Missing license key') {
           el.remove();
           clearInterval(interval);
+          console.clear();
           break;
         }
       }
