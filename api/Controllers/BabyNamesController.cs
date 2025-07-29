@@ -63,13 +63,20 @@ namespace BabyNameApi.Controllers
         {
             TopBabyNameCounts topBabyNameCounts = _babyNameService.TopPopularMaleFemaleCounts(stateCode, year);
             return Ok(topBabyNameCounts);
-        }           
-        
+        }
+
         [HttpGet("year-gender-counts")]
         public IActionResult YearGenderCount(int minYear, int maxYear, string stateCode)
         {
             IEnumerable<YearGenderCount> yearGenderCounts = _babyNameService.GetYearGenderCounts(minYear, maxYear, stateCode);
             return Ok(yearGenderCounts);
         }
+        
+        [HttpGet("count-of-all-ever-born")]
+        public IActionResult CountOfAllEverBorn()
+        {
+            long countOfAllEverBorn = _babyNameService.CountOfAllEverBorn();
+            return Ok(countOfAllEverBorn);
+        } 
     }
 }

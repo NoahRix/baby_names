@@ -170,7 +170,7 @@ namespace BabyNamesApi.Services
             return topBabyNameCounts;
         }
 
-        public IEnumerable<YearGenderCount> GetYearGenderCounts(int minYear, int maxYear,  string stateCode)
+        public IEnumerable<YearGenderCount> GetYearGenderCounts(int minYear, int maxYear, string stateCode)
         {
             if (minYear <= 0 || maxYear <= 0 || minYear > maxYear)
                 throw new ArgumentException("Invalid year range provided.");
@@ -189,5 +189,10 @@ namespace BabyNamesApi.Services
 
             return yearGenderCounts;
         }
+        
+        public long CountOfAllEverBorn()
+        {
+            return _dbContext.BabyNames.Sum(x => x.NameCount);
+        }        
     }
 }
