@@ -6,13 +6,11 @@ import { betterFetch } from '@better-fetch/fetch';
 
 
 function NumericSlider() {
-  const { setYear, selectedState, selectedStateMinYear, selectedStateMaxYear, setDistinctMaleCountForSelectedState, setDistinctFemaleCountForSelectedState } = useAppState();
-
-  const [selectedYear, setSelectedYear] = useState(null);
+  const { setCommitedYear, setSelectedYear, selectedYear, selectedState, selectedStateMinYear, selectedStateMaxYear, setDistinctMaleCountForSelectedState, setDistinctFemaleCountForSelectedState } = useAppState();
 
   //Set the selected year when the slider value changes.
   const handleYearChange = async (event, selectedYear) => {
-    setYear(selectedYear);
+    setCommitedYear(selectedYear);
 
     if (!selectedState)
       return;

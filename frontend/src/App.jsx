@@ -14,8 +14,9 @@ function App() {
     selectedState,
     selectedStateMinYear,
     selectedStateMaxYear,
-    year,
-    setYear,
+    commitedYear,
+    setCommitedYear,
+    selectedYear,
     distinctMaleCountForSelectedState,
     setDistinctMaleCountForSelectedState,
     distinctFemaleCountForSelectedState,
@@ -28,9 +29,9 @@ function App() {
   // and fetch the minimum and maximum years for the selected state code.
   // and fetch all needed data
   useEffect(() => {
-    if (year && selectedState && selectedStateMinYear && selectedStateMaxYear) {
-      if (year >= selectedStateMinYear && year <= selectedStateMaxYear) {
-        getDistinctGenderCounts(year);
+    if (commitedYear && selectedState && selectedStateMinYear && selectedStateMaxYear) {
+      if (commitedYear >= selectedStateMinYear && commitedYear <= selectedStateMaxYear) {
+        getDistinctGenderCounts(commitedYear);
         getTopPopularMaleFemaleNameCounts();
       }
       else {
@@ -39,14 +40,14 @@ function App() {
         getDistinctGenderCounts(selectedStateMinYear);
       }
     }
-  }, [selectedState, selectedStateMinYear, selectedStateMaxYear, year]);
+  }, [selectedState, selectedStateMinYear, selectedStateMaxYear, commitedYear]);
 
 
   const getDistinctGenderCounts = async () => {
-    if (!year && year == 0)
+    if (!commitedYear && commitedYear == 0)
       return;
 
-    const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/male-female-counts?stateCode=${selectedState.StateCode}&year=${year}`);
+    const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/male-female-counts?stateCode=${selectedState.StateCode}&year=${commitedYear}`);
 
     setDistinctMaleCountForSelectedState(data?.item1 ?? 0);
     setDistinctFemaleCountForSelectedState(data?.item2 ?? 0);
@@ -57,10 +58,10 @@ function App() {
     if (!selectedState)
       return;
 
-    if (!year)
+    if (!commitedYear)
       return;
 
-    const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/top-popular-male-female-name-counts?stateCode=${selectedState.StateCode}&year=${year}`);
+    const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/top-popular-male-female-name-counts?stateCode=${selectedState.StateCode}&year=${commitedYear}`);
     setTopPopularMaleFemaleNameCounts(data ?? null);
   }
 
@@ -88,13 +89,13 @@ function App() {
             <Typography variant="h6" gutterBottom>
               Select a year
             </Typography>
-            <Typography>{year}</Typography>
+            <Typography>{selectedYear}</Typography>
             <NumericSlider selectedStateMinYear={selectedStateMinYear} selectedStateMaxYear={selectedStateMaxYear}></NumericSlider>
           </>
         }
       </Box>
       <YearGenderCountChart></YearGenderCountChart>
-      {year && topPopularMaleFemaleNameCounts &&
+      {commitedYear && topPopularMaleFemaleNameCounts &&
         <Grid2 container spacing={6} justifyContent="center" alignItems="center" style={{ width: '90%', maxWidth: '100%' }}>
           <Grid2 xs={6} textAlign='center'>
             <Typography>Distinct Male Name Count: {distinctMaleCountForSelectedState?.toLocaleString('en-US')}</Typography>

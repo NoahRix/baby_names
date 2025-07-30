@@ -15,7 +15,8 @@ export const useAppState = () => {
 // Provider component
 export const AppStateProvider = ({ children }) => {
   const [selectedState, setSelectedState] = useState(null);
-  const [year, setYear] = useState(null);
+  const [commitedYear, setCommitedYear] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(null);
   const [selectedStateMinYear, setSelectedStateMinYear] = useState(null);
   const [selectedStateMaxYear, setSelectedStateMaxYear] = useState(null);
   const [distinctMaleCountForSelectedState, setDistinctMaleCountForSelectedState] = useState(null);
@@ -25,8 +26,10 @@ export const AppStateProvider = ({ children }) => {
   const value = {
     selectedState,
     setSelectedState,
-    year,
-    setYear,
+    commitedYear,
+    setCommitedYear,
+    selectedYear,
+    setSelectedYear,
     selectedStateMinYear,
     setSelectedStateMinYear,
     selectedStateMaxYear,

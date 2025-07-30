@@ -5,7 +5,7 @@ import { useAppState } from '../../AppStateContext';
 import { betterFetch } from '@better-fetch/fetch';
 
 const USMap = () => {
-  const { setSelectedState, selectedState, setSelectedStateMinYear, setSelectedStateMaxYear, year, setYear } = useAppState();
+  const { setSelectedState, selectedState, setSelectedStateMinYear, setSelectedStateMaxYear, commitedYear, setCommitedYear } = useAppState();
   const [hoveredState, setHoveredState] = useState(null);
 
   const handleMouseEnter = (state) => {
@@ -24,8 +24,8 @@ const USMap = () => {
 
     const { data, error } = await betterFetch(`${window.location.origin}/api/BabyNames/min-max-years-using-state?stateCode=${state.StateCode}`);
 
-    if (!year)
-      setYear(data?.minYear ?? 0);
+    if (!commitedYear)
+      setCommitedYear(data?.minYear ?? 0);
 
     setSelectedStateMinYear(data?.minYear ?? 0);
     setSelectedStateMaxYear(data?.maxYear ?? 0);
