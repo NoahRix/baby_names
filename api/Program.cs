@@ -39,8 +39,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
+        // Serve the Swagger JSON from the correct path. Previously this referenced
+        // "/api/swagger/v1/swagger.json" which assumes a PathBase of "/api".
+        // Use the standard path so the UI can fetch the definition correctly.
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Baby Names API v1");
-        c.RoutePrefix = "swagger"; // Serve Swagger UI at "/swagger"
     });
 }
 
