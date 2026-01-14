@@ -123,16 +123,16 @@ status_prod() {
     docker compose -f "$PROD_COMPOSE" -p "$PROD_PROJECT" ps
 }
 
-# Function to view dev logs
+# Function to view dev logs (show recent entries, non-follow)
 logs_dev() {
-    echo -e "${BLUE}${BOLD}Development Environment Logs (Ctrl+C to exit):${NC}"
-    docker compose -f "$DEV_COMPOSE" -p "$DEV_PROJECT" logs -f
+    echo -e "${BLUE}${BOLD}Development Environment Logs (recent):${NC}"
+    docker compose -f "$DEV_COMPOSE" -p "$DEV_PROJECT" logs --no-color --tail=200
 }
 
-# Function to view prod logs
+# Function to view prod logs (show recent entries, non-follow)
 logs_prod() {
-    echo -e "${BLUE}${BOLD}Production Environment Logs (Ctrl+C to exit):${NC}"
-    docker compose -f "$PROD_COMPOSE" -p "$PROD_PROJECT" logs -f
+    echo -e "${BLUE}${BOLD}Production Environment Logs (recent):${NC}"
+    docker compose -f "$PROD_COMPOSE" -p "$PROD_PROJECT" logs --no-color --tail=200
 }
 
 # Print non-interactive usage
@@ -246,64 +246,71 @@ if [ "$#" -gt 0 ]; then
     esac
 fi
 
-# Function to pause for user
+# Function to pause for user (no-op to allow auto-exit)
 pause() {
-    echo ""
-    read -p "Press [Enter] to continue..."
+    return 0
 }
 
-# Main loop
-while true; do
-    print_menu
-    read -p "Enter your choice [0-10]: " choice
-    echo ""
-    
-    case $choice in
-        1)
-            start_dev
-            pause
-            ;;
-        2)
-            stop_dev
-            pause
-            ;;
-        3)
-            restart_dev
-            pause
-            ;;
-        4)
-            start_prod
-            pause
-            ;;
-        5)
-            stop_prod
-            pause
-            ;;
-        6)
-            restart_prod
-            pause
-            ;;
-        7)
-            status_dev
-            pause
-            ;;
-        8)
-            status_prod
-            pause
-            ;;
-        9)
-            logs_dev
-            ;;
-        10)
-            logs_prod
-            ;;
-        0)
-            echo -e "${GREEN}${BOLD}Goodbye!${NC}"
-            exit 0
-            ;;
-        *)
-            echo -e "${RED}Invalid option. Please try again.${NC}"
-            pause
-            ;;
-    esac
-done
+# Show menu once, perform chosen action, then exit
+print_menu
+read -p "Enter your choice [0-10]: " choice
+echo ""
+
+case $choice in
+    1)
+        start_dev
+        pause
+        exit 0
+        ;;
+    2)
+        stop_dev
+        pause
+        exit 0
+        ;;
+    3)
+        restart_dev
+        pause
+        exit 0
+        ;;
+    4)
+        start_prod
+        pause
+        exit 0
+        ;;
+    5)
+        stop_prod
+        pause
+        exit 0
+        ;;
+    6)
+        restart_prod
+        pause
+        exit 0
+        ;;
+    7)
+        status_dev
+        pause
+        exit 0
+        ;;
+    8)
+        status_prod
+        pause
+        exit 0
+        ;;
+    9)
+        logs_dev
+        exit 0
+        ;;
+    10)
+        logs_prod
+        exit 0
+        ;;
+    0)
+        echo -e "${GREEN}${BOLD}Goodbye!${NC}"
+        exit 0
+        ;;
+    *)
+        echo -e "${RED}Invalid option. Exiting.${NC}"
+        exit 1
+        ;;
+esac
